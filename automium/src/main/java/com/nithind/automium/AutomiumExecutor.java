@@ -4,14 +4,15 @@ import com.nithind.automium.exceptions.DuplicateIdException;
 import com.nithind.automium.exceptions.PreExecutionException;
 import com.nithind.automium.reporters.Reporter;
 import com.nithind.automium.test.PreReqTestCase;
-import com.nithind.automium.test.XMLTestCase;
-import com.nithind.automium.test.XMLTestCases;
+import com.nithind.automium.test.Test;
+import com.nithind.automium.test.Tests;
 import com.nithind.automium.constants.ExecutionStatus;
 import com.nithind.automium.exceptions.NotAutomiumTestCaseException;
+import com.nithind.automium.xmlsupport.Automium;
+import com.nithind.automium.xmlsupport.Test;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -29,21 +30,22 @@ public class AutomiumExecutor {
 
     public void run(File xmlPath) throws Exception {
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(XMLTestCases.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Automium.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            XMLTestCases xmlTestCases = (XMLTestCases) jaxbUnmarshaller.unmarshal(xmlPath);
-            List<XMLTestCase> xmlTestCaseList = xmlTestCases.getTestCases();
+            Automium automiumXMLRoot = (Automium) jaxbUnmarshaller.unmarshal(xmlPath);
+            List<Test> TestList = automiumXMLRoot.getTests().getTest();
 
-            if(hasDuplicateId(xmlTestCaseList)) {
+            if(hasDuplicateId(TestList)) {
                 throw new DuplicateIdException();
             }
 
-            for (XMLTestCase xmlTestCase : xmlTestCaseList) {
-                if(xmlTestCase.getPreTestCases() !=  null) {
-                    checkPreMandatory(xmlTestCase.getPreTestCases());
-                }
+            Reporter.produceResult();
+            for (Test test : TestList) {
+                /*if(test.getPreTestCases() !=  null) {
+                    checkPreMandatory(test.getPreTestCases());
+                }*/
 
-                Class<?> clazz = Class.forName(xmlTestCase.getTestClassName());
+                Class<?> clazz = Class.forName(test.getClazz());
                 Constructor<?> ctor = clazz.getConstructor();
                 Object object = ctor.newInstance(new Object[]{});
 
@@ -55,9 +57,8 @@ public class AutomiumExecutor {
                 }
 
                 executeTestCases(testCase);
-                executedTestCase.add(xmlTestCase.getId());
+                executedTestCase.add(test.getId());
             }
-            Reporter.produceResult();
 
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -65,19 +66,19 @@ public class AutomiumExecutor {
 
     }
 
-    private boolean checkPreMandatory(List<PreReqTestCase> preList) throws PreExecutionException {
+  /*  private boolean checkPreMandatory(List<PreReqTestCase> preList) throws PreExecutionException {
         for (PreReqTestCase pre : preList) {
                 if (!executedTestCase.contains(pre.getId())) {
                     throw new PreExecutionException("for Id "+pre.getId());
                 }
         }
         return true;
-    }
+    }*/
 
 
-    private boolean hasDuplicateId(List<XMLTestCase> xmlTestCaseList) {
+    private boolean hasDuplicateId(List<Test> xmlTestCaseList) {
         List<String> idList = new ArrayList<String>();
-        for (XMLTestCase xmlTestCase : xmlTestCaseList) {
+        for (Test xmlTestCase : xmlTestCaseList) {
             if (xmlTestCase.getId() != null) {
                 if (idList.contains(xmlTestCase.getId())) {
                     return true;
