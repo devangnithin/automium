@@ -45,35 +45,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Automium.Tests }
+     * Create an instance of {@link Tests }
      * 
      */
-    public Automium.Tests createAutomiumTests() {
-        return new Automium.Tests();
+    public Tests createAutomiumTests() {
+        return new Tests();
     }
 
     /**
-     * Create an instance of {@link Automium.Config }
+     * Create an instance of {@link Config }
      * 
      */
-    public Automium.Config createAutomiumConfig() {
-        return new Automium.Config();
+    public Config createAutomiumConfig() {
+        return new Config();
     }
 
     /**
-     * Create an instance of {@link Automium.Tests.Test }
+     * Create an instance of {@link Test }
      * 
      */
-    public Automium.Tests.Test createAutomiumTestsTest() {
-        return new Automium.Tests.Test();
+    public Test createAutomiumTestsTest() {
+        return new Test();
     }
 
     /**
-     * Create an instance of {@link Automium.Config.Reporter }
+     * Create an instance of {@link Reporter }
      * 
      */
-    public Automium.Config.Reporter createAutomiumConfigReporter() {
-        return new Automium.Config.Reporter();
+    public Reporter createAutomiumConfigReporter() {
+        return new Reporter();
     }
 
 }
