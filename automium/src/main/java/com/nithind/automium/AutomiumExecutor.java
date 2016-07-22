@@ -1,8 +1,7 @@
 package com.nithind.automium;
 
 import com.nithind.automium.exceptions.DuplicateIdException;
-import com.nithind.automium.exceptions.PreExecutionException;
-import com.nithind.automium.reporters.Reporter;
+import com.nithind.automium.reporters.ReporterSupport;
 import com.nithind.automium.constants.ExecutionStatus;
 import com.nithind.automium.exceptions.NotAutomiumTestCaseException;
 import com.nithind.automium.xmlsupport.Automium;
@@ -36,7 +35,7 @@ public class AutomiumExecutor {
                 throw new DuplicateIdException();
             }
 
-            Reporter.produceResult();
+            ReporterSupport.produceResult();
             for (Test test : TestList) {
                 /*if(test.getPreTestCases() !=  null) {
                     checkPreMandatory(test.getPreTestCases());
@@ -90,18 +89,18 @@ public class AutomiumExecutor {
         AutomiumLog autoLog = testCase.run();
 
         if (autoLog.getExecutionStatus() == ExecutionStatus.SUCCESS) {
-            Reporter.success(testCase.getClass().getCanonicalName(), "Yes");
+            ReporterSupport.success(testCase.getClass().getCanonicalName(), "Yes");
         } else if (autoLog.getExecutionStatus() == ExecutionStatus.FAIL) {
-            Reporter.fail(testCase.getClass().getCanonicalName(), "");
+            ReporterSupport.fail(testCase.getClass().getCanonicalName(), "");
         } else if (autoLog.getExecutionStatus() == ExecutionStatus.WARN) {
-            Reporter.warn(testCase.getClass().getCanonicalName(), "");
+            ReporterSupport.warn(testCase.getClass().getCanonicalName(), "");
         }
         if (autoLog.getExecutionStatus() == ExecutionStatus.NOLOGS) {
-            Reporter.warn(testCase.getClass().getCanonicalName(), "No Log Reports Found In The Execution Returned");
+            ReporterSupport.warn(testCase.getClass().getCanonicalName(), "No Log Reports Found In The Execution Returned");
         }
         if (autoLog.getExecutionStatus() != ExecutionStatus.NOLOGS) {
 
-            Reporter.setClassLogs(autoLog);
+            ReporterSupport.setClassLogs(autoLog);
         }
     }
 }
