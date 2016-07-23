@@ -5,9 +5,8 @@ Automium is an automation testing framework built on top of Selenium. Test cases
 #use cases will be updated.
 
 #Steps.
-1. Clone/download this code and build using mvn clean install command so that jars are available in .m2. Currently the jars are not available in nexus.
 
-2. Create a new maven project for automation testing of your project and add the following dependency.
+1. Create a new maven project for automation testing of your project and add the following dependency.
 ```
 	<dependency>
             <groupId>com.nithind.automium</groupId>
@@ -16,6 +15,8 @@ Automium is an automation testing framework built on top of Selenium. Test cases
         </dependency>
 ```
 		
+2. Have a cup of coffee.
+3. 
 3.Create test case for each use case example Login.java for login functionality testing. impliment com.nithind.automium.TestCase and overide methods.
 			eg.
 			
